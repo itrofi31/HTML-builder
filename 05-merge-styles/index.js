@@ -14,7 +14,7 @@ const mergeStyles = async function () {
     const destPath = path.join(__dirname, 'project-dist');
     const bundeFile = path.join(destPath, 'bundle.css');
     //create folder project-dist
-    await fs.mkdir(destPath, { recursive: true });
+    // await fs.mkdir(destPath, { recursive: true });
     //create bundle.css
     await fs.writeFile(path.join(__dirname, 'project-dist', 'bundle.css'), '');
 

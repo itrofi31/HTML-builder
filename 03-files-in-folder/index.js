@@ -3,23 +3,33 @@ const path = require('path');
 
 const folderPath = path.join(__dirname, 'secret-folder');
 
-async function whatsInside() {
-  const files = await fs.readdir(folderPath, { withFileTypes: true });
+async function whatsInside(route) {
+  const files = await fs.readdir(route, { withFileTypes: true });
 
   for (const file of files) {
-    if (file.isFile()) {
-      const filePath = path.join(folderPath, file.name);
-      const stats = await fs.stat(filePath);
-      const fileSize = stats.size / 1024;
-      const fileExtension = path.extname(filePath).substring(1);
+    if (file.name === '.gitkeep') {
+      continue;
+    }
 
+    const filePath = path.join(route, file.name);
+    const stats = await fs.stat(filePath);
+    const fileSize = stats.size / 1024;
+    const fileExtension = path.extname(filePath).substring(1);
+    const output = () =>
       console.log(
-        `${file.name.slice(0, -4)}-${fileExtension}-${fileSize.toFixed(3)}kb`
+        `${file.name.slice(
+          0,
+          file.name.indexOf('.')
+        )}-${fileExtension}-${fileSize.toFixed(3)}kb`
       );
-    } else {
-      console.log(`${file.name.slice(0, -4)} is not a file`);
+
+    if (file.isFile()) {
+      output();
+    } else if (file.isDirectory()) {
+      output();
+      whatsInside(filePath);
     }
   }
 }
 
-whatsInside();
+whatsInside(folderPath);

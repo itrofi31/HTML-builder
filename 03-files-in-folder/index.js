@@ -26,7 +26,6 @@ async function whatsInside(route) {
     if (file.isFile()) {
       output();
     } else if (file.isDirectory()) {
-      output();
       whatsInside(filePath);
     }
   }

@@ -12,7 +12,7 @@ fs.writeFile(path.join(__dirname, 'text.txt'), '', (err) => {
       console.log('Proccess closing.');
       stdin.pause();
     } else {
-      fs.appendFile(path.join(__dirname, 'text2.txt'), data, (err, text) => {
+      fs.appendFile(path.join(__dirname, 'text.txt'), data, (err, text) => {
         console.log(text);
       });
     }

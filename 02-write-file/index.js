@@ -2,7 +2,7 @@ const fs = require('fs');
 const { stdin, stdout } = process;
 const path = require('path');
 
-fs.writeFile(path.join(__dirname, 'text2.txt'), '', (err) => {
+fs.writeFile(path.join(__dirname, 'text.txt'), '', (err) => {
   if (err) throw err;
   console.log('File created');
 

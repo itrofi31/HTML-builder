@@ -1,4 +1,4 @@
-const { createReadStream } = require('fs');
+const { createReadStream, readdir, readFile } = require('fs');
 const fs = require('fs/promises');
 const path = require('path');
 const { PassThrough } = require('stream');
@@ -12,23 +12,41 @@ fs.mkdir(path.join(__dirname, 'project-dist'), { recursive: true }, (err) =>
     let html = (
       await fs.readFile(path.join(__dirname, 'template.html'))
     ).toString();
+    let components = [];
 
-    let header = (
-      await fs.readFile(path.join(__dirname, 'components', 'header.html'))
-    ).toString();
+    let folderComponents = await fs.readdir(
+      path.join(__dirname, 'components'),
+      {
+        withFileTypes: true,
+      }
+    );
+    for (let component of folderComponents) {
+      const fileName = component.name.slice(0, component.name.indexOf('.'));
 
-    let articles = (
-      await fs.readFile(path.join(__dirname, 'components', 'articles.html'))
-    ).toString();
+      html = html.replace(
+        `{{${fileName}}}`,
+        await fs.readFile(
+          path.join(__dirname, 'components', `${fileName}.html`)
+        )
+      );
+    }
 
-    let footer = (
-      await fs.readFile(path.join(__dirname, 'components', 'footer.html'))
-    ).toString();
+    // let header = (
+    //   await fs.readFile(path.join(__dirname, 'components', 'header.html'))
+    // ).toString();
 
-    html = html
-      .replace('{{header}}', header)
-      .replace('{{articles}}', articles)
-      .replace('{{footer}}', footer);
+    // let articles = (
+    //   await fs.readFile(path.join(__dirname, 'components', 'articles.html'))
+    // ).toString();
+
+    // let footer = (
+    //   await fs.readFile(path.join(__dirname, 'components', 'footer.html'))
+    // ).toString();
+
+    // html = html
+    //   .replace('{{header}}', header)
+    //   .replace('{{articles}}', articles)
+    //   .replace('{{footer}}', footer);
     // console.log(html);
 
     //create new html for project-dist

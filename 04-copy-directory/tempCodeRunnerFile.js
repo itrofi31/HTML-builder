@@ -1,5 +1,1 @@
-if (file.isFile()) {
-      //   await fs.copyFile(file.name, destPath);
-      // } else if (file.isDirectory()) {
-      //   await copyDirectory(file.name, destPath);
-      // }
+    await fs.rm(dest, { recursive: true });
